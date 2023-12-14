@@ -1,0 +1,37 @@
+What do I need for main game?
+    |Board
+        -lines
+            .cells ->start point
+        -pop
+    
+    |tetrimo (type,color,rotation amount,location of O)
+        -take new tetrimo from next
+        -append 1 row per clk if row on the board is not all zeroes
+        -4x4 array
+        -rotation 
+            .(0,0)
+        -controllers
+            .change location of  O 
+            .check() ? go on : error saound
+        -lock
+            .check()=>check if for everry non-zero value t+1 pos is 0 and t+1 pos is not NULL
+
+    |next 
+        -ask tetrimo and add it to queue of 4 if it is less than 3
+
+    |hold
+        -take the !lock piece from board if next has 3 or less blocks
+        -on release add it to head of next
+
+    |speed
+        -number of poped line 
+
+    |score/poped lines
+
+    |pause/play
+        -if 0 dont run the time and set it to 0 if it become 1 set timer to current time 
+        -blur page
+    
+    |ENERGY TO CODE ALL IDEAS ABOVE
+        -coffee
+        -food
