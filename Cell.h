@@ -1,4 +1,5 @@
-
+#ifndef CELL_CPP
+#define CELL_CPP
 
 class Cell
 {
@@ -17,7 +18,8 @@ public:
         down=nullptr;
 
     }
+    friend class Line;
     ~Cell();
 };
 
-
+#endif // CELL_CPP
