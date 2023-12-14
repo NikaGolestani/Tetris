@@ -12,6 +12,7 @@ private:
 public:
     Cell* head;
     Line(int n, Cell* prev);
+    friend class Board;
     ~Line();
     void display();
 };

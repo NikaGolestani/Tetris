@@ -19,6 +19,7 @@ public:
 
     }
     friend class Line;
+    friend class Board;
     ~Cell();
 };
 
