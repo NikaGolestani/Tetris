@@ -7,7 +7,7 @@
 class Line
 {
 private:
-    
+    Line* next;
     int max;
 public:
     Cell* head;

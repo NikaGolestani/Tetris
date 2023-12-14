@@ -10,7 +10,7 @@ private:
     int height;
 public:
     Board(int a,int b);
-    void Board::display();
+    void display();
     ~Board();
 };
 
@@ -22,20 +22,17 @@ Board::Board(int a,int b)
     Line *node,*oldnode=head;
     for (int i=0;i<b;i++){
         node=new Line(a,oldnode->head);
+        oldnode->next=node;
         oldnode=node;
     }
 }
 void Board::display() {
 
-        Cell* current = head->head;
-        Cell* current2;
+        Line* current = head;
+        
         for(int i=0;i<height;i++) {
-            current2=current;
-            for(int j=0;j<width;j++){
-            std::cout << current2->item << " ";
-            current2=current2->right;
-            }
-            current=current->top;
+            current->display();
+            current=current->next;
         }
         std::cout << std::endl;
     };
