@@ -11,6 +11,7 @@ private:
 public:
     Board(int a,int b);
     void display();
+    Cell* midtop();
     ~Board();
 };
 
@@ -26,6 +27,19 @@ Board::Board(int a,int b)
         oldnode=node;
     }
 }
+
+Cell* Board::midtop(){
+    Cell* cur1=head->head,*cur2=head->head;
+    
+    while(cur1 && cur1->right){
+        cur1=cur1->right->right;
+        cur2=cur2->right;
+    }
+    cur2=cur2->left->left;
+    return cur2;
+
+}
+
 void Board::display() {
 
         Line* current = head;
