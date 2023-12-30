@@ -8,6 +8,7 @@ private:
         Cell* right;
         Cell* left;
         Cell* down;
+        int lock=0;
         int item;
 public:
     Cell(int value){
@@ -20,7 +21,11 @@ public:
     }
     friend class Line;
     friend class Board;
-    ~Cell();
+    friend class Tetrimo;
+    friend class Next;
+    ~Cell(){
+        
+    };
 };
 
 #endif // CELL_CPP

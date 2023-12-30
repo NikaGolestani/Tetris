@@ -3,23 +3,28 @@
 #include <iostream>
 #ifndef LINE_CPP
 #define  LINE_CPP
+#include <SFML/Graphics.hpp>
 
 class Line
 {
 private:
     Line* next;
-    int max;
 public:
     Cell* head;
     Line(int n, Cell* prev);
+    bool isfull();
+    void pop(Line* prev);
+    void makehead(Line* headb);
+    void display(sf::RenderWindow& window,int start,sf::Color a[5] );
+    void shrink();
     friend class Board;
     ~Line();
-    void display();
+    
 };
 
 Line::Line(int n,Cell* prev)
 {
-    max=n;
+
      Cell* node=new Cell(0);
      head=node;
      Cell* cur=head;
@@ -41,18 +46,85 @@ Line::Line(int n,Cell* prev)
 
      }
 }
-    void Line::display() {
-
+    void Line::display(sf::RenderWindow& window,int start,sf::Color a[5] ) {
         Cell* current = head;
+        int x=60;
+        
         while (current != nullptr) {
-            std::cout << current->item << " ";
+            sf::RectangleShape cellRect(sf::Vector2f(30, 30)); // Adjust size as needed
+            cellRect.setPosition(x,start);
+            
+            // Set color based on the integer value
+ 
+                cellRect.setFillColor(a[current->item]); 
+            
+
+            window.draw(cellRect);
             current = current->right;
+            x+=32;
         }
-        std::cout << std::endl;
-    };
+    
+    }
+    bool Line::isfull(){
+        Cell* cur=head;
+        while(cur){
+            if (cur->item==0)return false;
+            cur=cur->right;
+        }return true;
+    }
+    void Line::pop(Line* prev){
+        Cell* cur=head;
+        if (!prev)return;
+        prev->next=next;
+        Cell* curprev=prev->head;
+        while(cur && next){
+            curprev->down=cur->down;
+            cur->down->top=curprev;
+            cur=cur->right;
+            curprev=curprev->right;
+        }
+        while(cur && !cur->down){
+            curprev->down=cur->down;
+            cur=cur->right;
+            curprev=curprev->right;
+        }
+    }
+
+    void Line::shrink(){
+        Cell* temp=head;
+        head=head->right;
+        temp->right->left=nullptr;
+        delete temp;
+    }
+
+    void Line::makehead(Line*headb){
+        Cell* cur=head;
+        Cell* curnext=headb->head;
+        next=headb;
+        while(cur){
+            cur->top=nullptr;
+            cur->down=curnext;
+            curnext->top=cur;
+            cur->item=0;
+            cur->lock=0;
+            cur=cur->right;
+            curnext=curnext->right;
+        }
+    }
 
 Line::~Line()
 {
+    // Iterate through each cell in the line and delete them
+    Cell* current = head;
+    while (current) {
+        Cell* temp = current;
+        current = current->right;  // Move to the next cell
+        if (temp->down)
+            temp->down->top = nullptr;
+        delete temp;  // Delete the current cell
+    }
+    head = nullptr;  // Set head to null to avoid potential issues
 }
 
+//g++ main.cpp -lsfml-system -lsfml-window -lsfml-graphics -o test
 #endif // LINE_CPP

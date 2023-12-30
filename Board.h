@@ -1,6 +1,7 @@
 #include "Line.h"
 #ifndef BOARD_CPP
 #define BOARD_CPP
+#include <SFML/Graphics.hpp>
 
 class Board
 {
@@ -10,7 +11,10 @@ private:
     int height;
 public:
     Board(int a,int b);
-    void display();
+    void display(sf::RenderWindow& window,sf::Color a[5] ) ;
+    void shrink();
+    int check_pop();
+    void deleteTop();
     Cell* midtop();
     ~Board();
 };
@@ -28,6 +32,22 @@ Board::Board(int a,int b)
     }
 }
 
+int Board::check_pop(){
+    Line*cur=head;
+    Line*prev=nullptr;
+    int x=0;
+    while (cur){
+       if(cur->isfull()){
+        cur->pop(prev);
+        cur->makehead(head);
+        head=cur;
+        x++;
+       }
+       prev=cur;
+       cur=cur->next;
+    }return x;
+}
+
 Cell* Board::midtop(){
     Cell* cur1=head->head,*cur2=head->head;
     
@@ -40,19 +60,42 @@ Cell* Board::midtop(){
 
 }
 
-void Board::display() {
+void Board::shrink(){
+    if(width<=7)return;
+    Line* cur=head;
+    width--;
+    while(cur){
+        cur->shrink();
+        cur=cur->next;
+    }
+}
+void Board::deleteTop(){
+    Line* temp=head;
+    height--;
+    head=head->next;
+    delete temp;
+}
 
+    void Board::display(sf::RenderWindow& window,sf::Color a[5] ) {
         Line* current = head;
-        
-        for(int i=0;i<height;i++) {
-            current->display();
-            current=current->next;
+        int y=60;
+        for (int i = 0; i < height; i++) {
+            current->display(window,y,a);
+            current = current->next;
+            y+=32;
         }
-        std::cout << std::endl;
-    };
+
+        window.display();
+    }
 
 Board::~Board()
-{
+{Line* temp=head;
+    while (head){
+        head=head->next;
+        delete temp;
+        temp=head;
+    }
+    
 }
 
 
