@@ -9,8 +9,8 @@ class Line
 {
 private:
     Line* next;
-public:
     Cell* head;
+public:
     Line(int n, Cell* prev);
     bool isfull();
     void pop(Line* prev);
@@ -66,10 +66,16 @@ Line::Line(int n,Cell* prev)
     
     }
     bool Line::isfull(){
-        Cell* cur=head;
-        while(cur){
-            if (cur->item==0)return false;
-            cur=cur->right;
+        Cell* current=head;
+        while(current){
+            if (current) {
+        if (current->item == 0) {
+            return false;
+        }current=current->right;
+} else {
+    // Handle the case when 'current' is nullptr (e.g., print an error message).
+    return false;
+}
         }return true;
     }
     void Line::pop(Line* prev){
@@ -121,9 +127,10 @@ Line::~Line()
         current = current->right;  // Move to the next cell
         if (temp->down)
             temp->down->top = nullptr;
-        delete temp;  // Delete the current cell
+        delete temp; 
     }
-    head = nullptr;  // Set head to null to avoid potential issues
+    next=nullptr;
+    head = nullptr;  
 }
 
 //g++ main.cpp -lsfml-system -lsfml-window -lsfml-graphics -o test

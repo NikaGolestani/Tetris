@@ -15,6 +15,7 @@ public:
     void shrink();
     int check_pop();
     void deleteTop();
+    void restart(int a,int b);
     Cell* midtop();
     ~Board();
 };
@@ -87,6 +88,30 @@ void Board::deleteTop(){
 
         window.display();
     }
+void Board::restart(int a, int b) {
+    // Delete existing lines
+    Line* temp = head;
+    while (temp) {
+        Line* temp2 = temp->next;
+        delete temp;
+        temp = temp2;
+    }
+
+    // Initialize the board with new dimensions
+    width = a;
+    height = b;
+    head = new Line(a, nullptr);
+    Line* oldnode = head;
+
+    for (int i = 1; i < b; ++i) {
+        Line* node = new Line(a, oldnode->head);
+        oldnode->next = node;
+        oldnode = node;
+    }
+}
+
+
+
 
 Board::~Board()
 {Line* temp=head;

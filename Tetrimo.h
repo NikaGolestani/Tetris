@@ -11,6 +11,7 @@ private:
 public:
     Cell* orjin;
     Tetrimo(int color, int type, Cell* o);
+    Tetrimo(int color, int customArr[4][4], Cell* o);
     bool check(Cell* o, int brr[4][4]) const;
     bool move(char a);
     void lockT();
@@ -60,6 +61,15 @@ Tetrimo::Tetrimo(int color, int type, Cell* o) {
             break;
     }
 
+}
+
+Tetrimo::Tetrimo(int color, int customArr[4][4], Cell* o) {
+    orjin = o;
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            arr[i][j] = customArr[i][j] * color;
+        }
+    }
 }
 
 bool Tetrimo::check(Cell* o, int brr[4][4]) const {
@@ -152,11 +162,8 @@ void Tetrimo::display(sf::RenderWindow& window, int start, sf::Color a[5]) {
         for (int j = 0; j < 4; j++) {
             sf::RectangleShape cellRect(sf::Vector2f(15, 15));
             cellRect.setPosition(x, start);
-
-            // Set color based on the integer value
            if (arr [i][j]) {
             cellRect.setFillColor(a[arr[i][j]]);
-
             window.draw(cellRect);}
             x += 16;
         }
